@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const { login, loading, error } = useAuth();
@@ -11,11 +12,14 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const success = await login(username, password);
     if (success) {
       alert("Login realizado com sucesso!");
+      router.push("/dashboard");
       // redirecionar para dashboard, por exemplo
     }
   }

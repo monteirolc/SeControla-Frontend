@@ -18,16 +18,15 @@ export default function LoginPage() {
     e.preventDefault();
     const success = await login(username, password);
     if (success) {
-      alert("Login realizado com sucesso!");
       router.push("/dashboard");
       // redirecionar para dashboard, por exemplo
     }
   }
 
   return (
-    <main className="flex items-center justify-center min-h-screen dark:bg-gray-950">
-      <div className="w-full max-w-sm p-6 dark:bg-gray-700 rounded-2xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+    <main className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-950">
+      <div className="w-full max-w-sm p-6 bg-gray-200 dark:bg-gray-700 rounded-2xl shadow-lg">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-gray-100">Login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input 

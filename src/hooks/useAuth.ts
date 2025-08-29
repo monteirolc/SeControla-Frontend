@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import api from "@/services/api";
+import { fetchLogin } from "@/services/api";
 import Cookies from "js-cookie";
 
 export function useAuth() {
@@ -14,10 +14,10 @@ export function useAuth() {
       setLoading(true);
       setError(null);
 
-      const res = await api.post("/auth/login/", { username, password });
+      const res = await fetchLogin(username, password);
 
-      const access = res.data.access;
-      const refresh = res.data.refresh;
+      const access = res['access'];
+      const refresh = res['refresh'];
 
       if(access){
         localStorage.setItem("access", access);

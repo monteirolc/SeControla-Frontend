@@ -36,7 +36,7 @@ export default function LoginPage() {
           />
           <Input
             label="Senha"
-            // type="password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

@@ -7,6 +7,7 @@ export default function DashboardPage() {
   // token pode vir do localStorage, context ou cookies
   const token = typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : "";
   const { balance, loading, error } = useBalance(token);
+
   if (loading) {
     return (
       <main className="flex items-center justify-center min-h-screen">
@@ -23,21 +24,71 @@ export default function DashboardPage() {
     );
   }
 
+  const balanceResult = (data: typeof balance) => {
+    if (!data) return 0;
+
+    return Object.values(data).reduce((acc, item) => {
+      const value = Number(item.balance);
+      return acc + (isNaN(value) ? 0 : value);
+    }, 0);
+  }
+
   return (
     <main className="flex items-center justify-center min-h-screen dark:bg-gray-950">
       <div className="w-full max-w-2xl p-6 dark:bg-gray-700 bg-white rounded-2xl shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-6">Dashboard</h1>
         {balance && balance.length > 0 ? (
         <div className="space-y-4">
+          <strong className="p-1 justify-center">
+            {balanceResult(balance) > 0 ? (
+              <p className="text-green-500">{`Balanço: R$${(balanceResult(balance)).toFixed(2).replace(".", ",")}`}</p>
+            ) : (
+              <p className="text-red-500">{`Balanço: R$${balanceResult(balance).toFixed(2).replace(".", ",")}`}</p>
+            )}
+          </strong>
           {balance.map(item => (
             <div key={item.id} className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow">
               <p className="font-semibold">{item.name}</p>
               <p className="text-sm text-gray-500 dark:text-gray-300">
                 Criado em: {new Date(item.created_at).toLocaleString("pt-BR")}
               </p>
-              <p className="text-sm text-green-500 dark:text-gray-300">
-                Ganhos por carteira: {(item.total_incomes)}
-              </p>
+              {(() => {
+                switch(item.account_type){
+                  case "i":
+                    return (
+                      <p className="text-sm text-green-500">
+                        Ganhos por carteira: R${Number(item.total_incomes).toFixed(2).replace(".", ",")}
+                      </p>
+                    )
+                  case "e":
+                    return (
+                      <p className="text-sm text-red-500">
+                        Gastos por carteira: R${Number(item.total_expenses).toFixed(2).replace(".", ",")}
+                      </p>
+                    )
+                  case "fe":
+                    return (
+                      <p className="text-sm text-red-500">
+                        Gasto fixo por carteira: R${Number(item.total_fixed_expenses).toFixed(2).replace(".", ",")}
+                      </p>
+                    )
+                  case "fi":
+                    return (
+                      <p className="text-sm text-blue-500">
+                        Ganho fixo por carteira: R${("0,00")}
+                      </p>
+                    )
+                }
+              })()}
+              {/* {item.account_type == "i" ? (
+                <p className="text-sm text-green-500">
+                  Ganhos por carteira: R${(item.total_incomes)}
+                </p>
+              ):(
+                <p className="text-sm text-red-500">
+                  Gastos por carteira: R${(item.total_expenses)}
+                </p>
+              )} */}
             </div>
           ))}
         </div>

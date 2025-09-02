@@ -9,6 +9,11 @@ interface Balance {
   name: string;
   created_at: string;
   total_incomes: string;
+  total_expenses: string;
+  total_fixed_expenses: string;
+  balance: string;
+  account_type: string;
+  owner: string;
 }
 
 export function useBalance(token: string) {

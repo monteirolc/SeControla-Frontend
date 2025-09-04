@@ -4,7 +4,18 @@ import { useEffect, useState } from "react";
 import { fetchBalance } from "@/services/fetchBalanceAPI";
 import Cookies from "js-cookie";
 
+export type SharedAccounts = SharedAccount[];
+
+interface SharedAccount{
+  id: string;
+  user_username: string;
+  first_name_shared: string;
+  user: string;
+}
+
+
 interface Balance {
+  owner: string;
   id: string;
   name: string;
   created_at: string;
@@ -13,7 +24,7 @@ interface Balance {
   total_fixed_expenses: string;
   balance: string;
   account_type: string;
-  owner: string;
+  shared_accounts: SharedAccount[];
 }
 
 export function useBalance(token: string) {
@@ -32,7 +43,6 @@ export function useBalance(token: string) {
         }
 
         const data = await fetchBalance(authToken);
-        console.log(data);
         setBalance(data);
       } catch (err: unknown) {
         if (err instanceof Error) {

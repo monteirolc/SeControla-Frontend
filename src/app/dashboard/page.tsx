@@ -2,6 +2,7 @@
 
 // import { useEffect, useState } from "react";
 import { useBalance } from "@/hooks/useBalance";
+import { SharedAccounts } from "@/hooks/useBalance";
 
 export default function DashboardPage() {
   // token pode vir do localStorage, context ou cookies
@@ -31,6 +32,12 @@ export default function DashboardPage() {
       const value = Number(item.balance);
       return acc + (isNaN(value) ? 0 : value);
     }, 0);
+  }
+
+  const accounts__ = (data: SharedAccounts) => {
+    if (!data || data.length === 0) return null;
+    
+    return data.map(account => account.first_name_shared);
   }
 
   return (
@@ -80,15 +87,10 @@ export default function DashboardPage() {
                     )
                 }
               })()}
-              {/* {item.account_type == "i" ? (
-                <p className="text-sm text-green-500">
-                  Ganhos por carteira: R${(item.total_incomes)}
-                </p>
-              ):(
-                <p className="text-sm text-red-500">
-                  Gastos por carteira: R${(item.total_expenses)}
-                </p>
-              )} */}
+              <p className="text-1 text-gray-200">Proprietário: {item.owner}</p>
+              {accounts__(item.shared_accounts) === null ? (<p></p>) : (
+                <p className="text-1 text-gray-200">Conta compartilhada: { accounts__(item.shared_accounts) }</p>
+              )}
             </div>
           ))}
         </div>

@@ -87,9 +87,9 @@ export default function DashboardPage() {
                     )
                 }
               })()}
-              <p className="text-1 text-gray-200">Proprietário: {item.owner}</p>
+              <p className="text-[9px] text-gray-200">Proprietário: {item.owner}</p>
               {accounts__(item.shared_accounts) === null ? (<p></p>) : (
-                <p className="text-1 text-gray-200">Conta compartilhada: { accounts__(item.shared_accounts) }</p>
+                <p className="text-[9px] text-gray-200">Conta compartilhada: { accounts__(item.shared_accounts) }</p>
               )}
             </div>
           ))}

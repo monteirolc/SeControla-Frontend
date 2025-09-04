@@ -16,7 +16,7 @@ export default function Navbar() {
     <nav className="flex items-center justify-between px-3 bg-gray-100 dark:bg-gray-900 shadow-md">
       {/* Logo */}
       <Link href="/dashboard" className="text-xl font-bold text-blue-600 dark:text-blue-400">
-        <Image src="/assets/images/SeControlaLogo01.svg" width={150} height={100} alt="SeControla Logo"/>
+        <Image src="/assets/images/SeControlaLogo01.svg" width={150} height={100} alt="SeControla Logo" priority={false}/>
       </Link>
 
       {/* Itens da direita */}

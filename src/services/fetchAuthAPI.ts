@@ -10,7 +10,6 @@ export async function fetchLogin(username: string, password: string) {
       body: JSON.stringify({ username, password }),
     });
     const response = await res.json()
-    console.log(response)
     if(!response) {
       throw new Error("Login failed");
     }

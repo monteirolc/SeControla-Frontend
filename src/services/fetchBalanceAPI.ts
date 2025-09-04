@@ -1,7 +1,6 @@
 import { baseURL } from "@/services/urlAPI";
 
 export async function fetchBalance(token: string) {
-  console.log(token);
   const bearer = `Bearer ${String(token).trim()}`;
   try {
     const response = await fetch(`${baseURL}/balance/`, {

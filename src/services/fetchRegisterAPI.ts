@@ -18,7 +18,6 @@ export async function fetchRegister(
       body: JSON.stringify({ name, last_name, age, cpf, email, phone, username, password }),
     });
     const response = await res.json()
-    console.log(response)
     if(!response) {
       throw new Error("Register failed");
     }

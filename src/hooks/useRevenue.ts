@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Cookies from "js-cookie";
-import { createRevenues, deleteRevenues, getRevenues } from "@/services/fetchRevenueAPI";
+import { createRevenues, deleteRevenues, getRevenues } from "@/services/fetchRevenue";
 import { Revenue } from "@/interfaces/revenue";
 
 export function useRevenue(token: string) {

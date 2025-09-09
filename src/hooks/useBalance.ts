@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchBalance } from "@/services/fetchBalanceAPI";
+import { fetchBalance } from "@/services/balanceService";
 import Cookies from "js-cookie";
 import { Balance } from "@/interfaces/balance";
 

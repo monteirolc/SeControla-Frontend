@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { fetchLogin } from "@/services/fetchAuthAPI";
+import { fetchLogin } from "@/services/authService";
 import Cookies from "js-cookie";
 
 export function useAuth() {

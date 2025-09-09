@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { fetchRegister } from "@/services/fetchRegisterAPI";
+import { fetchRegister } from "@/services/registerService";
 
 export function useRegister() {
   const [loading, setLoading] = useState(false);

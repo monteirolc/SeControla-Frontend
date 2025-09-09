@@ -2,7 +2,7 @@
 
 // import { useEffect, useState } from "react";
 import { useBalance } from "@/hooks/useBalance";
-import { SharedAccounts } from "@/hooks/useBalance";
+import { SharedAccounts } from "@/interfaces/sharedAccount";
 
 export default function DashboardPage() {
   // token pode vir do localStorage, context ou cookies

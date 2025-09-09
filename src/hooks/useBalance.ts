@@ -3,29 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchBalance } from "@/services/fetchBalanceAPI";
 import Cookies from "js-cookie";
-
-export type SharedAccounts = SharedAccount[];
-
-interface SharedAccount{
-  id: string;
-  user_username: string;
-  first_name_shared: string;
-  user: string;
-}
-
-
-interface Balance {
-  owner: string;
-  id: string;
-  name: string;
-  created_at: string;
-  total_incomes: string;
-  total_expenses: string;
-  total_fixed_expenses: string;
-  balance: string;
-  account_type: string;
-  shared_accounts: SharedAccount[];
-}
+import { Balance } from "@/interfaces/balance";
 
 export function useBalance(token: string) {
   const [balance, setBalance] = useState<Balance[] | null>(null);

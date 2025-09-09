@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useAuthContext } from "@/context/AuthContext";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useRouter } from "next/navigation";
-import { House } from "lucide-react";
+import { House, LogOut } from "lucide-react";
 
 export default function Navbar() {
   
@@ -30,6 +30,7 @@ export default function Navbar() {
           <>
             <Link href="/dashboard" className="hover:underline text-gray-900 dark:text-gray-100"><House size={20}/></Link>
             <Link href="/revenue" className="hover:underline text-gray-900 dark:text-gray-100">Receitas</Link>
+            <Link href="/expense" className="hover:underline text-gray-900 dark:text-gray-100">Despesas</Link>
             <button 
               onClick={() => {
                 logout();
@@ -37,7 +38,7 @@ export default function Navbar() {
               }}
               className="text-red-500 hover:text-red-700"
             >
-              Sair
+              Sair<LogOut size={20} className="inline ml-1"/>
             </button>
             <ThemeToggle />
           </>

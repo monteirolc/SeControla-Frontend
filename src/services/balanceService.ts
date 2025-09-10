@@ -1,4 +1,5 @@
 import { baseURL } from "@/services/urlAPI";
+import errorFunction from "@/utils/errorFunction";
 
 export async function fetchBalance(token: string) {
   const bearer = `Bearer ${String(token).trim()}`;
@@ -17,7 +18,7 @@ export async function fetchBalance(token: string) {
     }
     return response.json();
   } catch (error) {
-    console.error(error);
+    errorFunction(error instanceof Error? String(Error): "Indetectável");
     return null;
   }
 }

@@ -1,4 +1,5 @@
 import { baseURL } from "@/services/urlAPI";
+import errorFunction from "@/utils/errorFunction";
 
 export async function fetchRegister(
     name: string,
@@ -25,7 +26,7 @@ export async function fetchRegister(
 
   }
   catch (error: unknown) {
-    console.error(error);
+    errorFunction(error instanceof Error? String(Error): "Indetectável");
     return null
   }
 }

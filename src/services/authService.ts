@@ -1,3 +1,4 @@
+import errorFunction from "@/utils/errorFunction";
 import { baseURL } from "./urlAPI";
 
 export async function fetchLogin(username: string, password: string) {
@@ -17,7 +18,7 @@ export async function fetchLogin(username: string, password: string) {
 
   }
   catch (error: unknown) {
-    console.error(error);
+    errorFunction(error instanceof Error? String(Error): "Indetectável");
     return null
   }
 }

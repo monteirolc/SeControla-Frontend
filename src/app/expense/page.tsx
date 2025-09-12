@@ -7,14 +7,17 @@ import  DateUi from "@/components/ui/Date";
 import Button from "@/components/ui/Button";
 import Loader from "@/components/ui/Loader";
 import Trash from "@/components/ui/Trash";
+import SquarePen from "@/components/ui/SquarePen";
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ExpensePage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const token = typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : "";
   const { expense, loading, error, removeExpense, refetch} = useExpense(token);
+  const router = useRouter();
   const dateFormated = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -81,6 +84,10 @@ export default function ExpensePage() {
                       R$ {Number(rev.amount).toFixed(2).replace(".", ",")}
                     </td>
                     <td className="text-right">
+                      <SquarePen 
+                        size={20}
+                        onClick={() => router.push("expense/edit")}
+                      />
                       <Trash
                         size={20}
                         onClick={() => confirm(`Realmente deseja deletar a receita ${rev.id}: ${rev.description}?`) ? 

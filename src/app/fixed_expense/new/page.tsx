@@ -6,25 +6,26 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ComboBox from "@/components/ui/ComboBox";
 import { useRouter } from "next/navigation";
-import { useExpense } from "@/hooks/useExpense"
+import {useFixedExpense} from "@/hooks/useFixedExpense"
 
 
 export default function NewExpensePage(){
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [balance, setBalance] = useState("");
-  const [date, setDate] = useState("");
+  const [dueday, setDueDay] = useState(0);
+  const [startdate, setStartDate] = useState("")
   const router = useRouter();
-  const { loading, error, addExpense } = useExpense("");
+  const { loading, error, addFixedExpense } = useFixedExpense("");
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : "";
   const { getBalance, loading: loadingBalance} = useBalance(token);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await addExpense({ balance, description, amount, date });
+    const success = await addFixedExpense({ balance, description, amount, due_day: dueday, start_date: startdate });
     if (success) {
-      router.push("/expense");
+      router.push("/fixed_expense");
     }
    };
 
@@ -35,27 +36,35 @@ export default function NewExpensePage(){
         <form onSubmit={handleSubmit}>
           <ComboBox
             defaultLabel="Conta associada"
-            options={getBalance?.filter((b) => b.account_type === "e").map((b) => 
+            options={getBalance?.filter((b) => b.account_type === "fe").map((b) => 
               ({ id: b.id, label: b.name })) ?? [{ id: "", label: "" }]}
             value={balance}
             onChange={setBalance}
             disabled={loadingBalance}
           />
           <Input
-            label="Amount"
+            label="Valor em R$"
             value={String(amount)}
             onChange={(e) => setAmount(Number(e.target.value))}
             type="number"
+            min={0}
+            step={0.01}
           />
           <Input
-            label="Description"
+            label="Descrição"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <Input
-            label="Date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            label="Dia de cobrança"
+            value={String(dueday)}
+            onChange={(e) => setDueDay(Number(e.target.value))}
+            type="number" min={0} max={28}
+          />
+          <Input
+            label="Inicio da cobrança"
+            value={startdate}
+            onChange={(e) => setStartDate(e.target.value)}
             type="date"
           />
           <br></br>

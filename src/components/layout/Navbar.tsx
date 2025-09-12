@@ -31,6 +31,7 @@ export default function Navbar() {
             <Link href="/dashboard" className="hover:underline text-gray-900 dark:text-gray-100"><House size={20}/></Link>
             <Link href="/revenue" className="hover:underline text-gray-900 dark:text-gray-100">Receitas</Link>
             <Link href="/expense" className="hover:underline text-gray-900 dark:text-gray-100">Despesas</Link>
+            <Link href="/fixed_expense" className="hover:underline text-gray-900 dark:text-gray-100">Despesa Fixa</Link>
             <button 
               onClick={() => {
                 logout();

@@ -12,17 +12,17 @@ import { useRevenue } from "@/hooks/useRevenue"
 export default function NewRevenuePage(){
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
-  const [balanceR, setBalanceR] = useState("");
+  const [balance, setBalance] = useState("");
   const [date, setDate] = useState("");
   const router = useRouter();
   const { loading, error, addRevenue } = useRevenue("");
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : "";
-  const { balance, loading: loadingBalance} = useBalance(token);
+  const { getBalance, loading: loadingBalance} = useBalance(token);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await addRevenue({ balance: balanceR, description, amount, date });
+    const success = await addRevenue({ balance, description, amount, date });
     if (success) {
       router.push("/revenue");
     }
@@ -31,18 +31,18 @@ export default function NewRevenuePage(){
   return (
     <main className="flex items-center justify-center min-h-screen bg-white dark:bg-gray-950">
       <div className="w-full max-w-sm p-6 bg-gray-200 dark:bg-gray-700 rounded-2xl shadow-lg">
-        <h1>Create New Revenue</h1>
+        <h1>Criar nova receita</h1>
         <form onSubmit={handleSubmit}>
           <ComboBox
             defaultLabel="Conta associada"
-            options={balance?.filter((b) => b.account_type === "i").map((b) => 
+            options={getBalance?.filter((b) => b.account_type === "i").map((b) => 
               ({ id: b.id, label: b.name })) ?? [{ id: "", label: "" }]}
-            value={balanceR}
-            onChange={setBalanceR}
+            value={balance}
+            onChange={setBalance}
             disabled={loadingBalance}
           />
           <Input
-            label="Amount"
+            label="Valor em R$"
             value={String(amount)}
             onChange={(e) => setAmount(Number(e.target.value))}
             type="number"

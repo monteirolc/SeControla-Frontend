@@ -7,7 +7,7 @@ import { SharedAccounts } from "@/interfaces/sharedAccount";
 export default function DashboardPage() {
   // token pode vir do localStorage, context ou cookies
   const token = typeof window !== "undefined" ? localStorage.getItem("token") ?? "" : "";
-  const { balance, loading, error } = useBalance(token);
+  const { getBalance, loading, error } = useBalance(token);
 
   if (loading) {
     return (
@@ -25,7 +25,7 @@ export default function DashboardPage() {
     );
   }
 
-  const balanceResult = (data: typeof balance) => {
+  const balanceResult = (data: typeof getBalance) => {
     if (!data) return 0;
 
     return Object.values(data).reduce((acc, item) => {
@@ -46,16 +46,16 @@ export default function DashboardPage() {
       <main className="flex items-center justify-center min-h-screen dark:bg-gray-950">
         <div className="w-full max-w-2xl p-6 dark:bg-gray-700 bg-white rounded-2xl shadow-lg">
           <h1 className="text-2xl font-bold text-center">Dashboard</h1>
-          {balance && balance.length > 0 ? (
+          {getBalance && getBalance.length > 0 ? (
           <div className="space-y-2">
             <strong>
-              {balanceResult(balance) > 0 ? (
-                <p className="text-center text-green-500">{`Balanço: R$${(balanceResult(balance)).toFixed(2).replace(".", ",")}`}</p>
+              {balanceResult(getBalance) > 0 ? (
+                <p className="text-center text-green-500">{`Balanço: R$${(balanceResult(getBalance)).toFixed(2).replace(".", ",")}`}</p>
               ) : (
-                <p className="text-red-500">{`Balanço: R$${balanceResult(balance).toFixed(2).replace(".", ",")}`}</p>
+                <p className="text-red-500">{`Balanço: R$${balanceResult(getBalance).toFixed(2).replace(".", ",")}`}</p>
               )}
             </strong>
-            {balance.map(item => (
+            {getBalance.map(item => (
               <div key={item.id} className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow">
                 <p className="font-semibold">{item.name}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-300">

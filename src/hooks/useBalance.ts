@@ -35,5 +35,5 @@ export function useBalance(token: string) {
     loadBalance();
   }, [token]);
 
-  return { balance, loading, error };
+  return { getBalance: balance, loading, error };
 }

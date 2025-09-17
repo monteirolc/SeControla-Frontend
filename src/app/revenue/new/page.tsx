@@ -6,7 +6,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ComboBox from "@/components/ui/ComboBox";
 import { useRouter } from "next/navigation";
-import { useRevenue } from "@/hooks/useRevenue"
+import useRevenue from "@/hooks/useRevenue"
 
 
 export default function NewRevenuePage(){

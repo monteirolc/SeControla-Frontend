@@ -6,7 +6,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import ComboBox from "@/components/ui/ComboBox";
 import { useRouter } from "next/navigation";
-import { useExpense } from "@/hooks/useExpense"
+import useExpense from "@/hooks/useExpense"
 
 
 export default function NewExpensePage(){

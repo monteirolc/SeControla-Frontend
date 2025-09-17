@@ -1,12 +1,18 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Cookies from "js-cookie";
-import { createExpenses, deleteExpenses, getExpenses } from "@/services/expenseService";
-import { Expense } from "@/interfaces/expense";
+import { createExpenses, deleteExpenses, getExpenses, putExpense } from "@/services/expenseService";
+import Expense from "@/interfaces/expense";
+import errorFunction from "@/utils/errorFunction";
 
-export function useExpense(token: string) {
+export default function useExpense(token: string) {
   const [expense, setExpenses] = useState<Expense[]>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const lastParamsRef = useRef<{ startDate?: string; endDate?: string } | null>(null);
+
+  const defaultError = (error: unknown) => {
+    setError(error instanceof Error? error.message : "Error desconhecido");
+  }
   
   let authToken = token;
   if (!authToken) {
@@ -14,17 +20,28 @@ export function useExpense(token: string) {
     }
   const refetchExpense = useCallback(async (startDate?: string, endDate?: string) => {
     try {
+      // evita refetch se params iguais (opcional)
+      if (
+        lastParamsRef.current &&
+        lastParamsRef.current.startDate === startDate &&
+        lastParamsRef.current.endDate === endDate
+      ) {
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
-        const data = await getExpenses(authToken, startDate, endDate);
-        setExpenses(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erro desconhecido");
-      } finally {
-        setLoading(false);
-      }
-    }, [authToken]);
+      const data = await getExpenses(authToken, startDate, endDate);
+      while(!data) {}
+      setExpenses(Array.isArray(data)? data : []);
+      lastParamsRef.current = { startDate, endDate };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido");
+    } finally {
+      setLoading(false);
+    }
+  }, [authToken]);
 
   const fetchExpense = async () => {
     try {
@@ -71,9 +88,20 @@ export function useExpense(token: string) {
     }
   }
 
+  const updateExpense = async (expenseData: Expense, id?: number) => {
+    try{
+      setLoading(true);
+      setError(null);
+      const response = await putExpense(authToken, id, expenseData)
+      if(!response) errorFunction("Erro ao atualizar gastos fixos");
+      return true;
+    } catch(error){ defaultError(error); 
+    } finally { setLoading(false); }
+  }
+
   useEffect(() => {
     refetchExpense();
   }, [refetchExpense]);
 
-  return {expense, loading, error, fetchExpense, addExpense, removeExpense, refetch: refetchExpense};
+  return {expense, loading, error, fetchExpense, addExpense, updateExpense, remove: removeExpense, refetch: refetchExpense};
 }

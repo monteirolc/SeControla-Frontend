@@ -10,10 +10,10 @@ import {
 import errorFunction from "@/utils/errorFunction";
 
  
- export function useFixedExpense(token: string){
-  const [fixedExpense, setFixedExpenses] = useState<FixedExpense[]>();
+export function useFixedExpense(token: string){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fixedExpense, setFixedExpenses] = useState<FixedExpense[]>();
 
   let authToken = token;
   if (!authToken) {
@@ -86,5 +86,5 @@ import errorFunction from "@/utils/errorFunction";
   }, [refetchFixedExpense]);
 
   return {fixedExpense, loading, error, fetchFixedExpense, refetch: refetchFixedExpense, addFixedExpense, 
-    removeFixedExpense, updateFixedExpenses}
+    remove: removeFixedExpense, updateFixedExpenses}
  }

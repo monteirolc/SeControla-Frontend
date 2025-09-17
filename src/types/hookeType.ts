@@ -1,0 +1,1 @@
+export type HookType = "revenue" | "expense" | "fixedExpense";

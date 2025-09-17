@@ -1,5 +1,5 @@
 import { baseURL } from "@/services/urlAPI";
-import { Revenue } from "@/interfaces/revenue";
+import Revenue from "@/interfaces/revenue";
 import errorFunction from "@/utils/errorFunction";
 
 let url  = `${baseURL}/incomes/`;
@@ -68,6 +68,26 @@ export async function deleteRevenues(token: string, id?: number) {
     }
   } catch (error) {
     errorFunction("Erro inesperado ao buscar receitas", undefined, undefined, error);
-  }
+  }  
 }
 
+export async function putRevenue(token: string, id?: number, revenueData?: Revenue){
+  try{
+    const bearer = `Bearer ${String(token).trim()}`;
+    if(id && revenueData){
+      const response = await fetch(`${url}${id}/`,{
+        method: "PUT",
+        headers:{
+          "Content-Type": "application/json",
+          Authorization: bearer,
+        },
+        body: JSON.stringify(revenueData),
+      });
+
+      if(!response.ok) errorFunction(`Erro ao atualizar dados: ${response.status}`);
+      return await response.json();
+    }
+  } catch (error) {
+    errorFunction("Erro inesperado ao atualizar", undefined, undefined, error);
+  }
+}

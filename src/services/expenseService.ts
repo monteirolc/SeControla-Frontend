@@ -1,16 +1,15 @@
 import { baseURL } from "./urlAPI";
-import { Expense } from "@/interfaces/expense";
+import Expense from "@/interfaces/expense";
 import errorFunction from "@/utils/errorFunction";
 
-let url  = `${baseURL}/expenses/`;
-const params = new URLSearchParams();
+const url  = new URL(`${baseURL}/expenses/`);
 export async function getExpenses(token: string, startDate?: string, endDate?: string) {
   try{
     const bearer = `Bearer ${String(token).trim()}`;
 
-    if (startDate) params.append("datei", startDate);
-    if (endDate) params.append("datef", endDate);
-    if (params.toString()) url += `?${params.toString()}`;
+    if (startDate) url.searchParams.set("datei", startDate);
+    if (endDate) url.searchParams.set("datef", endDate);
+    
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -55,7 +54,8 @@ export async function deleteExpenses(token: string, id?: number) {
     const bearer = `Bearer ${String(token).trim()}`;
 
     if (id) {
-      const response = await fetch(`${url}${id}/`, {
+      url.searchParams.set("id", id.toString());
+      const response = await fetch(url, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -68,5 +68,27 @@ export async function deleteExpenses(token: string, id?: number) {
     }
   } catch (error) {
     errorFunction("Erro inesperado ao buscar gastos/despesas", undefined, undefined, error);
+  }
+}
+
+export async function putExpense(token: string, id?: number, expenseData?: Expense){
+  try{
+    const bearer = `Bearer ${String(token).trim()}`;
+    if(id) url.searchParams.set("id", id.toString());
+    if(id && expenseData){
+      const response = await fetch(url,{
+        method: "PUT",
+        headers:{
+          "Content-Type": "application/json",
+          Authorization: bearer,
+        },
+        body: JSON.stringify(expenseData),
+      });
+
+      if(!response.ok) errorFunction(`Erro ao atualizar dados: ${response.status}`);
+      return await response.json();
+    }
+  } catch (error) {
+    errorFunction("Erro inesperado ao atualizar", undefined, undefined, error);
   }
 }

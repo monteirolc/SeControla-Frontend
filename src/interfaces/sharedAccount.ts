@@ -1,5 +1,3 @@
-export type SharedAccounts = SharedAccount[];
-
 export interface SharedAccount{
   id: string;
   user_username: string;

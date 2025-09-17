@@ -1,12 +1,17 @@
 import { useEffect, useState, useCallback } from "react";
 import Cookies from "js-cookie";
-import { createRevenues, deleteRevenues, getRevenues } from "@/services/revenueService";
-import { Revenue } from "@/interfaces/revenue";
+import { createRevenues, deleteRevenues, getRevenues, putRevenue } from "@/services/revenueService";
+import Revenue from "@/interfaces/revenue";
+import errorFunction from "@/utils/errorFunction";
 
-export function useRevenue(token: string) {
+export default function useRevenue(token: string) {
   const [revenue, setRevenues] = useState<Revenue[]>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const defaultError = (error: unknown) => {
+    setError(error instanceof Error? error.message : "Error desconhecido");
+  }
   
   let authToken = token;
   if (!authToken) {
@@ -19,11 +24,8 @@ export function useRevenue(token: string) {
 
         const data = await getRevenues(authToken, startDate, endDate);
         setRevenues(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erro desconhecido");
-      } finally {
-        setLoading(false);
-      }
+      } catch (error) { defaultError(error);
+      } finally { setLoading(false); }
     }, [authToken]);
 
   const fetchRevenue = async () => {
@@ -33,12 +35,8 @@ export function useRevenue(token: string) {
       const response = await getRevenues(authToken);
       if (!response) throw new Error("Erro ao criar receita");
       return true;
-    } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Erro inesperado");
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) { defaultError(error);
+    } finally { setLoading(false); }
   }
 
   const addRevenue = async (revenueData: Revenue) =>{
@@ -48,12 +46,8 @@ export function useRevenue(token: string) {
       const response = await createRevenues(authToken, revenueData);
       if (!response) throw new Error("Erro ao criar receita");
       return true;
-    } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Erro inesperado");
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) { defaultError(error);
+    } finally { setLoading(false); }
   }
 
   const removeRevenue = async (id: number) =>{
@@ -63,17 +57,24 @@ export function useRevenue(token: string) {
       const response = await deleteRevenues(authToken, id);
       if (!response) throw new Error("Erro ao deletar receita");
       return true;
-    } catch (error) {
-      if (error instanceof Error) setError(error.message);
-      else setError("Erro inesperado");
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) { defaultError(error);
+    } finally { setLoading(false); }
+  }
+
+  const updateRevenue = async (revenueData: Revenue, id?: number) => {
+    try{
+      setLoading(true);
+      setError(null);
+      const response = await putRevenue(authToken, id, revenueData)
+      if(!response) errorFunction("Erro ao atualizar gastos fixos");
+      return true;
+    } catch(error){ defaultError(error); 
+    } finally { setLoading(false); }
   }
 
   useEffect(() => {
     refetchRevenue();
   }, [refetchRevenue]);
 
-  return {revenue, loading, error, fetchRevenue, addRevenue, removeRevenue, refetch: refetchRevenue};
+  return {revenue, loading, error, fetchRevenue, addRevenue, updateRevenue, remove: removeRevenue, refetch: refetchRevenue};
 }

@@ -4,6 +4,7 @@ import errorFunction from "@/utils/errorFunction";
 
 const url  = new URL(`${baseURL}/expenses/`);
 export async function getExpenses(token: string, startDate?: string, endDate?: string) {
+  
   try{
     const bearer = `Bearer ${String(token).trim()}`;
 
@@ -54,8 +55,7 @@ export async function deleteExpenses(token: string, id?: number) {
     const bearer = `Bearer ${String(token).trim()}`;
 
     if (id) {
-      url.searchParams.set("id", id.toString());
-      const response = await fetch(url, {
+      const response = await fetch(`${baseURL}/expenses/${id}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -74,9 +74,8 @@ export async function deleteExpenses(token: string, id?: number) {
 export async function putExpense(token: string, id?: number, expenseData?: Expense){
   try{
     const bearer = `Bearer ${String(token).trim()}`;
-    if(id) url.searchParams.set("id", id.toString());
     if(id && expenseData){
-      const response = await fetch(url,{
+      const response = await fetch(`${baseURL}/expenses/${id}/`,{
         method: "PUT",
         headers:{
           "Content-Type": "application/json",

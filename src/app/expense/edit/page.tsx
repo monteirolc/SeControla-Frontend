@@ -67,7 +67,7 @@ export default function NewExpensePage(){
   }, [data]);
   loading = false
 
-  const returnToPrincipal = () => router.push("/Expense");
+  const returnToPrincipal = () => router.push("/expense");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

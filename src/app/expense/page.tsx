@@ -36,8 +36,8 @@ export default function ExpensePage() {
                 size={20}
                 onClick={async () => {
                   if (confirm(`Realmente deseja deletar a despesa (${rev.id}: ${rev.description})?`)) {
-                    await remove(Number(rev.id));
-                    await refetch();
+                    await remove(Number(rev.id)).then(() => refetch());
+
                   }
                 }}
               />

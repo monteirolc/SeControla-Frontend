@@ -12,6 +12,7 @@ import GenericInterface from "@/interfaces/genericInterface";
 import { generateRSAKeys } from "@/utils/generateRASKey";
 import { encryptJSON } from "@/utils/encryptJSON";
 import dateFormated from "@/utils/formatDate";
+import stringDate from "@/utils/stringDate";
 
 type rowData = {
   id: number | string | undefined;
@@ -120,7 +121,7 @@ export default function TableData({
                   <tr key={rev.id} className="border-b">
                     {rev.description ? <td>{rev.description}</td> : null}
                     {rev.due_day ? <td> {dateFormated(String(rev.due_day))} </td>: null }
-                    {rev.date ? <td> {dateFormated(String(rev.date))} </td>: null }
+                    {rev.date ? <td> {dateFormated(stringDate(rev.date))} </td>: null }
                     {rev.amount ? <td className="font-medium"> R$ {Number(rev.amount).toFixed(2).replace(".", ",")} </td> : null }
                     <td className="text-right">
                       <SquarePen 
